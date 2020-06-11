@@ -47,14 +47,21 @@ app.get('/scrape', (req, res) => {
 
       result.headline = $(element).find('h3').find('a').text().trim()
       result.summary = $(element).find('h4').text().trim()
-      result.url = `${domain}${$(element).find('h3').find('a').attr('href')}`
+      result.link = `${domain}${$(element).find('h3').find('a').attr('href')}`
       result.imgUrl = $(element).find('img.lazy').attr('data-original')
-      console.log(result)
+
+      // Create a new Article using the `result` object built from scraping
+      db.Article.create(result)
+        .then(dbArticle => {
+          console.log(dbArticle)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     })
 
     // Send a message to the client
     res.send("Scrape Complete");
-
   })
 })
 

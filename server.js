@@ -29,6 +29,7 @@ mongoose.connect(MONGODB_URI)
 
 
 // ************ Routes ************
+
 // A GET route for scraping the https://www.infoworld.com/category/javascript/ website
 app.get('/scrape', (req, res) => {
   // First, we grab the body of the html with axios
@@ -53,6 +54,7 @@ app.get('/scrape', (req, res) => {
       // Create a new Article using the `result` object built from scraping
       db.Article.create(result)
         .then(dbArticle => {
+          // View the added result in the console
           console.log(dbArticle)
         })
         .catch(err => {
@@ -64,6 +66,50 @@ app.get('/scrape', (req, res) => {
     res.send("Scrape Complete");
   })
 })
+
+// Route for getting all Articles from the db
+app.get('/articles', (req, res) => {
+  db.Article.find({}).then(data => {
+    res.json(data)
+  }).catch(err => {
+    res.json(err)
+  })
+})
+
+// Route for grabbing a specific Article by id, populate it with it's comments
+app.get('/articles/:id', (req, res) => {
+  db.Article.findOne({ _id: req.params.id })
+    .populate('Note')
+    .then(data => {
+      res.json(data)
+    })
+    .catch(err => {
+      res.json(err)
+    })
+})
+
+// Route for saving/updating an Article's associated Comment
+app.post('/articles/:id', (req, res) => {
+  // Save the new comment that gets posted to the Notes collection
+  // then find an article from the req.params.id
+  // and update it's "comments" property with the _id of the new note
+  db.Comment.create(req.body).then(data => {
+    return db.Article.findOne(
+      {
+        _id: req.params.id
+      },
+      {
+        note: data._id
+      },
+      {
+        new: true
+      }
+    )
+  }).catch(err => {
+    res.json(err)
+  })
+})
+
 
 // Start the server
 app.listen(PORT, () => {

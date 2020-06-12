@@ -1,6 +1,7 @@
 const express = require('express')
 const logger = require('morgan')
 const mongoose = require('mongoose')
+const exphbs = require('express-handlebars');
 
 // Our scraping tools ====
 // Axios is a promised-based http library, similar to jQuery's Ajax method
@@ -26,6 +27,10 @@ app.use(express.static('public'))
 // Connect to the Mongo DB
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 mongoose.connect(MONGODB_URI)
+
+// Set Handlebars as the default templating engine.
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
 
 
 // ************ Routes ************
@@ -64,6 +69,19 @@ app.get('/scrape', (req, res) => {
 
     // Send a message to the client
     res.send("Scrape Complete");
+  })
+})
+
+// Route for getting all Articles from the db
+app.get('/', (req, res) => {
+  db.Article.find({}).then(data => {
+    console.log(data)
+
+    res.render('index', {
+      articles: data.map(article => article.toJSON())
+    })
+  }).catch(err => {
+    console.log(err)
   })
 })
 

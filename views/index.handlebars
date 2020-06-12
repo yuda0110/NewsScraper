@@ -1,5 +1,32 @@
 <div class="container">
     <h1>Javascript News from the World</h1>
-    <div id="articles"></div>
-    <div id="comments"></div>
+    <section id="articles">
+        <ul>
+            {{#each articles}}
+                <a href="{{link}}" target="_blank" rel="noopener">
+                    <li>
+                        <h3>{{headline}}</h3>
+                        <img src="{{imgUrl}}">
+                        <p>{{_id}}</p>
+                        <p>{{summary}}</p>
+                    </li>
+                </a>
+            {{/each}}
+        </ul>
+    </section>
+
+    <section id="comments">
+        <form id="comment-form" action="">
+            <div class="form-group">
+                <label for="comment" class="label"><ion-icon name="airplane"></ion-icon>First Name</label>
+                <textarea class="form-control" id="comment" placeholder="Write a comment..." name="comment">
+                </textarea>
+            </div>
+
+            <button id="form-submit" type="submit" class="btn btn-submit">
+                <ion-icon name="pencil-outline"></ion-icon>
+                Submit
+            </button>
+        </form>
+    </section>
 </div>

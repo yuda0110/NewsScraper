@@ -97,7 +97,7 @@ app.get('/articles', (req, res) => {
 // Route for grabbing a specific Article by id, populate it with it's comments
 app.get('/articles/:id', (req, res) => {
   db.Article.findOne({ _id: req.params.id })
-    .populate('Comment')
+    .populate('comments')
     .then(data => {
       res.json(data)
     })
@@ -111,19 +111,25 @@ app.post('/articles/:id', (req, res) => {
   // Save the new comment that gets posted to the Notes collection
   // then find an article from the req.params.id
   // and update it's "comments" property with the _id of the new note
-  db.Comment.create(req.body).then(data => {
-    return db.Article.findOne(
+  db.Comment.create(req.body).then(dbComment => {
+    return db.Article.findOneAndUpdate(
       {
         _id: req.params.id
       },
       {
-        note: data._id
+        $push: {
+          comments: dbComment._id
+        }
       },
       {
         new: true
       }
     )
+  }).then(dbArticle => {
+    // If we were able to successfully update an Article, send it back to the client
+    res.json(dbArticle)
   }).catch(err => {
+    // If an error occurred, send it to the client
     res.json(err)
   })
 })

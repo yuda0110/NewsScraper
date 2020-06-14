@@ -16,11 +16,10 @@ $(document).on('click', '.comment-btn', function() {
         <form id="comment-form" action="">
             <div class="form-group">
                 <label for="comment" class="label">Comment for ${articleId}</label>
-                <textarea class="form-control" id="comment" placeholder="Write a comment..." name="comment">
-                </textarea>
+                <textarea class="form-control" id="comment" placeholder="Write a comment..." name="comment"></textarea>
             </div>
 
-            <button id="form-submit" type="submit" class="btn btn-submit">
+            <button id="comment-submit" data-id=${articleId} class="btn btn-submit">
                 <ion-icon name="pencil-outline"></ion-icon>
                 Submit
             </button>
@@ -28,6 +27,7 @@ $(document).on('click', '.comment-btn', function() {
     `)
 
     if (data.comments.length > 0) {
+      console.log(data.comments)
       const commentList = $('<ul>')
       data.comments.forEach(comment => {
         commentList.append(`
@@ -44,4 +44,24 @@ $(document).on('click', '.comment-btn', function() {
   }).fail(err => {
     console.log(err)
   })
+})
+
+$(document).on('click', '#comment-submit', function(e) {
+  e.preventDefault()
+  // Grab the id associated with the article from the submit button
+  const articleId = $(this).attr('data-id')
+  const commentEl = $('#comment')
+
+  // Run a POST request to change the comment, using what's entered in the inputs
+  $.ajax({
+    method: 'POST',
+    url: `/articles/${articleId}`,
+    data: {
+      body: commentEl.val()
+    }
+  }).then(data => {
+    console.log(data)
+  })
+
+  commentEl.val('')
 })

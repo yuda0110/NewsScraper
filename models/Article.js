@@ -7,10 +7,12 @@ const Schema = mongoose.Schema
 const ArticleSchema = new Schema({
   headline: {
     type: String,
+    trim: true,
     required: true
   },
   summary: {
     type: String,
+    trim: true,
     required: true
   },
   link: {

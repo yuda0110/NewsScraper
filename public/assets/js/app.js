@@ -1,10 +1,4 @@
-$(document).on('click', '.comment-btn', function() {
-  if ($('#comments')) {
-    $('#comments').remove()
-  }
-  // Save the data-id from the button
-  const articleId = $(this).attr('data-id')
-
+const createCommentSection = articleId => {
   // Now make an ajax call for the Article
   $.ajax({
     method: 'GET',
@@ -22,6 +16,11 @@ $(document).on('click', '.comment-btn', function() {
             <button id="comment-submit" data-id=${articleId} class="btn btn-submit">
                 <ion-icon name="pencil-outline"></ion-icon>
                 Submit
+            </button>
+            
+            <button id="comment-close" class="btn btn-close">
+                <ion-icon name="close-circle"></ion-icon>
+                Close
             </button>
         </form>
     `)
@@ -44,7 +43,21 @@ $(document).on('click', '.comment-btn', function() {
   }).fail(err => {
     console.log(err)
   })
+}
+
+
+$(document).on('click', '.comment-btn', function(e) {
+  e.preventDefault()
+
+  if ($('#comments')) {
+    $('#comments').remove()
+  }
+  // Save the data-id from the button
+  const articleId = $(this).attr('data-id')
+
+  createCommentSection(articleId)
 })
+
 
 $(document).on('click', '#comment-submit', function(e) {
   e.preventDefault()
@@ -59,9 +72,19 @@ $(document).on('click', '#comment-submit', function(e) {
     data: {
       body: commentEl.val()
     }
-  }).then(data => {
+  }).done(data => {
     console.log(data)
+    $('#comments').remove()
+    createCommentSection(articleId)
+  }).fail(err => {
+    console.log(err)
   })
+})
 
-  commentEl.val('')
+
+$(document).on('click', '#comment-close', (e) => {
+  if ($('#comments')) {
+    $('#comments').remove()
+  }
+  e.preventDefault()
 })

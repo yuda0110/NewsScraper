@@ -97,7 +97,7 @@ app.get('/articles', (req, res) => {
 // Route for grabbing a specific Article by id, populate it with it's comments
 app.get('/articles/:id', (req, res) => {
   db.Article.findOne({ _id: req.params.id })
-    .populate('Note')
+    .populate('Comment')
     .then(data => {
       res.json(data)
     })

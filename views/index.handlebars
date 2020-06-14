@@ -3,30 +3,18 @@
     <section id="articles">
         <ul>
             {{#each articles}}
-                <a href="{{link}}" target="_blank" rel="noopener">
-                    <li>
-                        <h3>{{headline}}</h3>
+                <li id="article{{_id}}">
+                    <h3>
+                        <a href="{{link}}" target="_blank" rel="noopener">{{headline}}</a>
+                    </h3>
+                    <a href="{{link}}" target="_blank" rel="noopener">
                         <img src="{{imgUrl}}">
-                        <p>{{_id}}</p>
-                        <p>{{summary}}</p>
-                    </li>
-                </a>
+                    </a>
+                    <p>{{_id}}</p>
+                    <p>{{summary}}</p>
+                    <button class="btn comment-btn" data-id="{{_id}}">View / Write Comment</button>
+                </li>
             {{/each}}
         </ul>
-    </section>
-
-    <section id="comments">
-        <form id="comment-form" action="">
-            <div class="form-group">
-                <label for="comment" class="label"><ion-icon name="airplane"></ion-icon>First Name</label>
-                <textarea class="form-control" id="comment" placeholder="Write a comment..." name="comment">
-                </textarea>
-            </div>
-
-            <button id="form-submit" type="submit" class="btn btn-submit">
-                <ion-icon name="pencil-outline"></ion-icon>
-                Submit
-            </button>
-        </form>
     </section>
 </div>

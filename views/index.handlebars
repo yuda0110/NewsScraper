@@ -1,20 +1,29 @@
+<h1>Javascript News from the World</h1>
 <div class="container">
-    <h1>Javascript News from the World</h1>
     <section id="articles">
         <ul>
             {{#each articles}}
-                <li id="article{{_id}}">
+                <li id="article{{_id}}" class="article-item">
                     <h3>
                         <a href="{{link}}" target="_blank" rel="noopener">{{headline}}</a>
                     </h3>
                     <a href="{{link}}" target="_blank" rel="noopener">
                         <img src="{{imgUrl}}">
                     </a>
-                    <p>{{_id}}</p>
-                    <p>{{summary}}</p>
-                    <button class="btn comment-btn" data-id="{{_id}}">View / Write Comment</button>
+                    <p class="summary">{{summary}}</p>
+                    <button class="btn btn-comment" data-id="{{_id}}">
+                        <ion-icon name="chatbubble-ellipses"></ion-icon>
+                        View / Write Comment
+                    </button>
                 </li>
             {{/each}}
         </ul>
     </section>
 </div>
+<footer>
+    <p>
+        * All articles are scraped from
+        <a href="https://www.infoworld.com/category/javascript/" target="_blank" rel="noopener">InfoWorld</a>
+        .
+    </p>
+</footer>

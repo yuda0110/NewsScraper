@@ -46,7 +46,7 @@ const createCommentSection = articleId => {
 }
 
 
-$(document).on('click', '.comment-btn', function(e) {
+$(document).on('click', '.btn-comment', function(e) {
   e.preventDefault()
 
   if ($('#comments')) {

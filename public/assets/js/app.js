@@ -9,7 +9,7 @@ const createCommentSection = articleId => {
     $(commentsSection).append(`
         <form id="comment-form" action="">
             <div class="form-group">
-                <label for="comment" class="label">Comment for ${articleId}</label>
+                <label for="comment" class="label">Comment</label>
                 <textarea class="form-control" id="comment" placeholder="Write a comment..." name="comment"></textarea>
             </div>
 
@@ -17,29 +17,29 @@ const createCommentSection = articleId => {
                 <ion-icon name="pencil-outline"></ion-icon>
                 Submit
             </button>
-            
-            <button id="comment-close" class="btn btn-close">
-                <ion-icon name="close-circle"></ion-icon>
-                Close
-            </button>
         </form>
     `)
 
+    $(commentsSection).append(`
+        <ion-icon id="comment-close" name="close-circle" class="close-icon"></ion-icon>
+    `)
+
     if (data.comments.length > 0) {
-      console.log(data.comments)
-      const commentList = $('<ul>')
+      const commentHeading = $('<h2>').append('<ion-icon name="chatbubbles-sharp"></ion-icon>Comments')
+      const commentList = $('<ul class="comment-list">')
       data.comments.forEach(comment => {
         commentList.append(`
             <li>
+                <span class="date">${moment(comment.created).format('MM-DD-YYYY')}</span>
                 <p>${comment.body}</p>
-                <span>${moment(comment.created).format('MMMM Do YYYY')}</span>
             </li>
         `)
       })
-      $(commentsSection).append(commentList)
+      const commentView = $('<div class="comment-view">').append(commentHeading, commentList)
+      $(commentsSection).append(commentView)
     }
 
-    $(`#article${articleId}`).after(commentsSection)
+    $(`#article${articleId}`).append(commentsSection)
   }).fail(err => {
     console.log(err)
   })

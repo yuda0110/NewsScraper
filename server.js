@@ -1,7 +1,7 @@
 const express = require('express')
 const logger = require('morgan')
 const mongoose = require('mongoose')
-const exphbs = require('express-handlebars');
+const exphbs = require('express-handlebars')
 
 // Our scraping tools ====
 // Axios is a promised-based http library, similar to jQuery's Ajax method
@@ -75,8 +75,6 @@ app.get('/scrape', (req, res) => {
 // Route for getting all Articles from the db
 app.get('/', (req, res) => {
   db.Article.find({}).then(data => {
-    console.log(data)
-
     res.render('index', {
       articles: data.map(article => article.toJSON())
     })

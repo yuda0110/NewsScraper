@@ -32,7 +32,7 @@ const createCommentSection = articleId => {
         commentList.append(`
             <li>
                 <p>${comment.body}</p>
-                <span>${comment.created}</span>
+                <span>${moment(comment.created).format('MMMM Do YYYY')}</span>
             </li>
         `)
       })

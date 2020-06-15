@@ -27,7 +27,7 @@ const createCommentSection = articleId => {
     if (data.comments.length > 0) {
       const commentHeading = $('<h2>').append('<ion-icon name="chatbubbles-sharp"></ion-icon>Comments')
       const commentList = $('<ul class="comment-list">')
-      data.comments.forEach(comment => {
+      data.comments.reverse().forEach(comment => {
         commentList.append(`
             <li>
                 <span class="date">${moment(comment.created).format('MM-DD-YYYY')}</span>

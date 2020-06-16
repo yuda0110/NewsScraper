@@ -4,7 +4,6 @@ const createCommentSection = articleId => {
     method: 'GET',
     url: `/articles/${articleId}`
   }).done(data => {
-    console.log(data)
     const commentsSection = $('<div id="comments">')
     $(commentsSection).append(`
         <form id="comment-form" action="">
@@ -73,7 +72,6 @@ $(document).on('click', '#comment-submit', function(e) {
       body: commentEl.val()
     }
   }).done(data => {
-    console.log(data)
     $('#comments').remove()
     createCommentSection(articleId)
   }).fail(err => {

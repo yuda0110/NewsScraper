@@ -67,8 +67,11 @@ app.get('/scrape', (req, res) => {
         })
     })
 
-    // Send a message to the client
-    res.send("Scrape Complete");
+    // Log scrape complete
+    console.log('Scrape Complete')
+
+  }).then(result => {
+    res.redirect('/')
   })
 })
 

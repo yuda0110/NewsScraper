@@ -51,6 +51,7 @@ app.get('/scrape', (req, res) => {
     $('.river-well.article').each((i, element) => {
       const result = {}
 
+      result.articleId = $(element).attr('data-id')
       result.headline = $(element).find('h3').find('a').text().trim()
       result.summary = $(element).find('h4').text().trim()
       result.link = `${domain}${$(element).find('h3').find('a').attr('href')}`

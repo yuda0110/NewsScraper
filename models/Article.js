@@ -5,6 +5,11 @@ const Schema = mongoose.Schema
 
 // Using the Schema constructor, create a new ArticleSchema object
 const ArticleSchema = new Schema({
+  articleId: {
+    type: String,
+    required: true,
+    unique: true
+  },
   headline: {
     type: String,
     trim: true,

@@ -42,30 +42,45 @@ app.get('/scrape', (req, res) => {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data)
     const domain = 'https://www.infoworld.com'
+    const articleIdArr = []
 
     // Headline - the title of the article
     // Summary - a short summary of the article
     // URL - the url to the original article
     // Feel free to add more content to your database (photos, bylines, and so on)
 
-    $('.river-well.article').each((i, element) => {
-      const result = {}
+    db.Article.find({}).then(data => {
+      data.forEach(item => {
+        articleIdArr.push(item.articleId)
+      })
 
-      result.articleId = $(element).attr('data-id')
-      result.headline = $(element).find('h3').find('a').text().trim()
-      result.summary = $(element).find('h4').text().trim()
-      result.link = `${domain}${$(element).find('h3').find('a').attr('href')}`
-      result.imgUrl = $(element).find('img.lazy').attr('data-original')
+      console.log(articleIdArr)
 
-      // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
-        .then(dbArticle => {
-          // View the added result in the console
-          console.log(dbArticle)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      $('.river-well.article').each((i, element) => {
+        const result = {}
+
+        result.articleId = $(element).attr('data-id')
+        result.headline = $(element).find('h3').find('a').text().trim()
+        result.summary = $(element).find('h4').text().trim()
+        result.link = `${domain}${$(element).find('h3').find('a').attr('href')}`
+        result.imgUrl = $(element).find('img.lazy').attr('data-original')
+
+        console.log('result.articleId: ' + result.articleId)
+
+        if (!articleIdArr.includes(result.articleId)) {
+          // Create a new Article using the `result` object built from scraping
+          db.Article.create(result)
+            .then(dbArticle => {
+              // View the added result in the console
+              console.log(dbArticle)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      })
+    }).catch(err => {
+      console.log(err)
     })
 
     // Log scrape complete
